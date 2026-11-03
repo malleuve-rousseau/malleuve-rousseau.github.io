@@ -85,11 +85,13 @@ nav a:hover{background:#EEF1FF;color:#0010E6}
 .hero h1{margin-top:0!important}
 .hero-logo{grid-column:1/-1;justify-self:center;margin:0;width:min(340px,78vw)}
 .hero-logo img{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 28px rgba(0,0,0,.35))}
-.hero h1{margin-bottom:8px!important;grid-column:1/-1;text-align:center;white-space:nowrap;font-size:clamp(1.15rem,5.2vw,4.2rem)!important}
+.hero h1{margin-bottom:8px!important;grid-column:1/-1;text-align:center;white-space:nowrap;--k:14.7;font-size:min(calc((100vw - 64px) / var(--k)),calc(1140px / var(--k)))!important}
+html[lang="en"] .hero h1{--k:15.4}
+@media (max-width:900px){.hero h1{font-size:calc((100vw - 42px) / var(--k))!important}}
 
 .hero h1{font-size:clamp(2.5rem,6vw,4.4rem);font-weight:800;margin-top:14px;letter-spacing:-.03em}
 .hero h1 em{font-style:normal;color:#fff;background:linear-gradient(transparent 72%,var(--accent) 72%,var(--accent) 90%,transparent 90%)}
-.hero p.lead{margin-top:22px;font-size:1.2rem;max-width:52ch;color:#D5DBF2}
+.hero p.lead{margin-top:22px;font-size:1.2rem;line-height:1.35;max-width:52ch;color:#D5DBF2}
 .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 .spec{background:#FFFFFF;color:#0E1A3A;border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,.28);padding:8px 24px;min-width:0}
 .spec div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid #E2E7F1;font-size:.96rem}
@@ -328,7 +330,7 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
         <img src="img/comercio-exterior.png" width="340" height="340" fetchpriority="high" decoding="async" data-i18n-alt="imp.alt" alt="Comercio exterior por vía marítima, aérea y por carretera: globo centrado en el Caribe con un buque portacontenedores, un avión de carga y un camión">
       </picture>
     </figure>
-    <h1 data-i18n-html="hero.h1"><em>CONECTANDO</em> CON EL MUNDO</h1>
+    <h1 data-i18n-html="hero.h1"><em>CONECTANDO CON EL MUNDO</em></h1>
     <div>
       <p class="lead" data-i18n="hero.lead">Comercialización mayorista y minorista. Importamos lo que su negocio necesita y exportamos sus productos y servicios.</p>
       <div class="ctas">
@@ -585,7 +587,7 @@ const SERVICIOS = [
 const EN = {
  "nav.menu":"Menu","nav.servicios":"Services","nav.materiales":"Materials","nav.importacion":"Foreign trade","nav.obras":"Projects","nav.empresa":"Company","nav.contacto":"Contact",
  "hk.1":"Import","hk.2":"Export","hk.3":"Trade","hk.4":"Services",
- "hero.h1":"<em>CONNECTING</em> WITH THE WORLD",
+ "hero.h1":"<em>CONNECTING WITH THE WORLD</em>",
  "hero.lead":"Wholesale and retail trade. We import what your business needs and export your products and services.",
  "cta.quote":"Request a quote","cta.services":"See services",
  "spec.razon":"Company","spec.tipo":"Type","spec.tipo.v":"MSME (MIPYME)","spec.principal":"Main activity","spec.principal.v":"Wholesale and retail trade","spec.pilares":"Pillars","spec.pilares.v":"Import · Export · Documentation management","spec.activos":"Active services","spec.puertos":"Ports","spec.aero":"Airports",
