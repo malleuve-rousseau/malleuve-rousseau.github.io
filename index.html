@@ -78,7 +78,7 @@ nav a:hover{background:#EEF1FF;color:#0010E6}
 /* Portada */
 .hero{background:radial-gradient(1200px 500px at 85% -10%,var(--navy-2),transparent 60%),linear-gradient(180deg,var(--navy),#08143D);color:#fff;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--accent) 0 33%,#0010E6 33% 100%)}
-.hero .wrap{position:relative;z-index:1;padding-block:6px 88px;display:grid;grid-template-columns:1.25fr .9fr;column-gap:56px;row-gap:28px;align-items:start}
+.hero .wrap{position:relative;z-index:1;padding-block:6px 88px;display:grid;grid-template-columns:minmax(0,1fr);column-gap:56px;row-gap:28px;align-items:start}
 .hero .tag{color:#AEB9FF}
 .hero-kicker{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:clamp(.85rem,1.6vw,1rem);color:#DDE3FF;margin-bottom:0}
 .hero-kicker i{font-style:normal;color:var(--accent);margin:0 .35em}
@@ -393,21 +393,15 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
           <div><dt data-i18n="lg.cat">Categoría</dt><dd data-i18n="lg.cat.v">MIPYME</dd></div>
           <div><dt data-i18n="lg.nit">NIT</dt><dd class="num">50004346012</dd></div>
           <div><dt data-i18n="lg.dom">Domicilio legal</dt><dd>Avenida Cebreco No. 310<br>% 11 y 13<br>Vista Alegre, Santiago de Cuba</dd></div>
+          <div><dt data-i18n="lg.mail">Correo electrónico</dt><dd></dd></div>
+          <div><dt data-i18n="lg.tel">Teléfonos</dt><dd></dd></div>
+          <div><dt data-i18n="lg.wa">WhatsApp</dt><dd></dd></div>
         </dl>
       </div>
       <div class="ctas">
         <a class="btn btn-primary" href="#contacto" data-i18n="cta.quote">Solicitar cotización</a>
         <a class="btn btn-ghost" href="#servicios" data-i18n="cta.services">Ver servicios</a>
       </div>
-    </div>
-    <div class="spec" aria-label="Ficha">
-      <div><span data-i18n="spec.razon">Compañía</span><span>Malleuve &amp; Rousseau S.R.L.</span></div>
-      <div><span data-i18n="spec.tipo">Tipo</span><span data-i18n="spec.tipo.v">MIPYME</span></div>
-      <div><span data-i18n="spec.principal">Actividad principal</span><span data-i18n="spec.principal.v">Comercialización mayorista y minorista</span></div>
-      <div><span data-i18n="spec.pilares">Pilares</span><span data-i18n="spec.pilares.v">Importación · Exportación · Gestión documental</span></div>
-      <div><span data-i18n="spec.activos">Servicios activos</span><span id="countActive">—</span></div>
-      <div><span data-i18n="spec.puertos">Puertos</span><span>Mariel · Santiago de Cuba</span></div>
-      <div><span data-i18n="spec.aero">Aeropuertos</span><span>La Habana · Santiago de Cuba</span></div>
     </div>
   </div>
 </section>
@@ -643,7 +637,7 @@ const EN = {
  "imp.r3":"Eastern Cuba","imp.r4":"Shipping from Cuba","imp.r4c":"Export","imp.r5":"Air freight","imp.r5d":"Carriage and insurance paid to the airports of Havana or Santiago de Cuba. For urgent or high-value shipments, with documents handled by us.","imp.r4d":"Shipment of Cuban products from Mariel or Santiago de Cuba, with documents and freight handled by us.","imp.r3d":"Cost, insurance and freight to the port of Santiago de Cuba.",
  "st.1":"Requirement","st.1d":"Technical specification and quantities","st.2":"Selection","st.2d":"Vetted manufacturers and compared offers","st.3":"Purchase","st.3d":"Contract, samples and pre-shipment inspection","st.4":"Shipment","st.4d":"Sea freight, insurance and documents","st.5":"Delivery","st.5d":"Port clearance and transport to the client",
  "ob.tag":"Experience","ob.h2":"Completed projects","ob.p":"A selection of works carried out by our team.","ob.pend":"Photo pending","ob.1":"Project 1 · Name and location","ob.2":"Project 2 · Name and location","ob.3":"Project 3 · Name and location",
- "co.tag":"Who we are","co.h2":"The company","co.p1":"Malleuve & Rousseau S.R.L. is a private MSME (MIPYME) engaged in wholesale and retail trade, with import and export as the pillars of its business.","co.btn":"Who are we?","lg.nombre":"Name","lg.cat":"Category","lg.cat.v":"MSME (MIPYME)",
+ "co.tag":"Who we are","co.h2":"The company","co.p1":"Malleuve & Rousseau S.R.L. is a private MSME (MIPYME) engaged in wholesale and retail trade, with import and export as the pillars of its business.","co.btn":"Who are we?","lg.nombre":"Name","lg.mail":"Email","lg.tel":"Phones","lg.wa":"WhatsApp","lg.cat":"Category","lg.cat.v":"MSME (MIPYME)",
  "co.p2":"We manage each operation from start to finish: purchasing, documentation, shipping and delivery, so the client has a single point of contact throughout.",
  "lg.razon":"Company name","lg.forma":"Legal form","lg.forma.v":"Limited Liability Company","lg.nit":"Tax ID (NIT)","lg.dom":"Registered address","lg.dom.v":"Avenida Cebreco No. 310, between 11 and 13, Vista Alegre, Santiago de Cuba, Cuba","lg.zona":"Operating area","lg.zona.v":"All of Cuba, with an initial focus on the eastern region","pend":"Pending",
  "ct.tag":"Tell us what you need","ct.lead":"Fill in the form and send us your request by WhatsApp, by email or both.","f.s4":"Send by","f.vwa":"WhatsApp","f.vmail":"Email","ct.wa":"WhatsApp","ct.mail":"Email","ct.addr":"Address","ct.copy":"Copy",
@@ -824,7 +818,7 @@ function render(){
   if(ceP){ceP.prepend(document.getElementById("ce-intro"));ceP.append(document.getElementById("ce-extra"))}
   const o=document.createElement("option");o.value="otro";o.textContent=t.other;sel.appendChild(o);
   if([...sel.options].some(x=>x.value===prev))sel.value=prev;
-  document.getElementById("countActive").textContent=activos;
+  const ca=document.getElementById("countActive");if(ca)ca.textContent=activos;
   ddRefreshAll();
   verDestino();
   renderAdmin();
