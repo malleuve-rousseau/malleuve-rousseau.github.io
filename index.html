@@ -108,6 +108,30 @@ section.alt{background:var(--surface)}
 @media (max-width:700px){section.band{padding-block:64px}}
 
 /* Servicios */
+.acc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.acc-item+.acc-item{border-top:1px solid var(--line)}
+.acc-t{margin:0;font-size:inherit}
+.acc-h{display:flex;align-items:center;gap:14px;width:100%;min-height:68px;padding:14px 24px;background:none;border:0;cursor:pointer;text-align:left;color:var(--ink);font-family:var(--f-display);font-weight:800;font-size:1rem;letter-spacing:.08em;text-transform:uppercase}
+.acc-h:hover{background:var(--brand-soft)}
+.acc-h:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}
+.acc-h .ico{flex-shrink:0;width:40px;height:40px;border-radius:10px;margin:0}
+.acc-h .ico svg{width:20px;height:20px}
+.acc-h .acc-n{flex:1;min-width:0}
+.acc-h .chev{flex-shrink:0;width:22px;height:22px;color:var(--accent);transition:transform .2s}
+.acc-h[aria-expanded="true"]{background:var(--brand-soft)}
+.acc-h[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.acc-p{padding:18px 24px 24px 78px;border-top:1px solid var(--line)}
+.mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.mod{border:1.5px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.mod h3{margin:0;font-size:1.02rem;color:var(--blue-text);font-weight:800}
+.mod ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;color:var(--muted);font-size:.96rem;line-height:1.3}
+.mod li{position:relative;padding-left:14px}
+.mod li::before{content:"";position:absolute;left:0;top:.45em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.mod .ask{margin-top:auto;align-self:flex-start;min-height:44px;padding:0 4px;background:none;border:0;color:var(--blue-text);font-family:var(--f-display);font-weight:700;font-size:.98rem;cursor:pointer}
+.mod .ask:hover{text-decoration:underline}
+.mod-st{margin-top:auto;font-size:.85rem;color:var(--muted)}
+.acc-item.is-soon .acc-n{opacity:.7}
+@media (max-width:600px){.acc-h{padding:12px 16px;gap:12px;font-size:.92rem;letter-spacing:.05em}.acc-p{padding:16px}}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;align-items:stretch}
 .svc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s,border-color .2s}
 section.alt .svc{background:var(--bg)}
@@ -356,7 +380,7 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
       <div><span class="tag" data-i18n="svc.tag">Qué hacemos</span><h2 data-i18n="svc.h2">Servicios</h2></div>
       <p data-i18n="svc.p">Elija el servicio que necesita y le preparamos una propuesta a la medida de su proyecto.</p>
     </div>
-    <div class="grid" id="svcGrid"></div>
+    <div class="acc" id="svcGrid"></div>
   </div>
 </section>
 
@@ -753,6 +777,7 @@ function aplicarIdioma(){
   render();
 }
 
+let accOpen=null;
 function render(){
   const t=UI[lang];
   const grid=document.getElementById("svcGrid"); grid.innerHTML="";
@@ -763,15 +788,16 @@ function render(){
     if(s.seccion){document.querySelectorAll('[data-sec="'+s.seccion+'"]').forEach(el=>el.hidden=(st==="oculto"))}
     if(st==="oculto"||s.soloSeccion)return;
     if(st==="activo"){activos++;(tx.op||[[null,tx.n]]).forEach(([k,n])=>{const o=document.createElement("option");o.value=k?s.id+"-"+k:s.id;o.textContent=n;sel.appendChild(o)})}
-    const c=document.createElement("article");
-    c.className="svc"+(st==="pronto"?" is-soon":"");
-    c.innerHTML='<div class="top"><span class="ico">'+(ICO[s.id]||ICO.def)+'</span><span class="tag">'+tx.n+'</span>'+(st==="pronto"?'<span class="pill soon">'+t.soon+'</span>':'')+'</div>'+
-      (tx.op&&st==="activo"
-        ? '<div class="pick">'+tx.op.map(([k,n,ti,bl])=>'<div class="pick-g"><button type="button" class="ask pick-b" data-id="'+s.id+'-'+k+'"><span>'+ti+'</span><span aria-hidden="true">→</span></button>'+(bl?'<ul>'+bl.map(x=>'<li>'+x+'</li>').join("")+'</ul>':'')+'</div>').join("")+'</div>'+
-          '<div class="foot"><span class="tag">'+t.avail+'</span><span class="pick-h">'+t.pickh+'</span></div>'
-        : '<ul>'+tx.i.map(i=>'<li>'+i+'</li>').join("")+'</ul>'+
-          '<div class="foot"><span class="tag">'+(st==="pronto"?t.prep:t.avail)+'</span>'+
-          (st==="activo"?'<button class="ask" data-id="'+s.id+'">'+t.ask+'</button>':'')+'</div>');
+    const abierto=(accOpen===s.id), pid="acc-"+s.id, soon=(st==="pronto");
+    const mods=(tx.op||[[null,tx.n,tx.n,tx.i]]).map(([k,n,ti,bl])=>
+      '<div class="mod"><h3>'+(tx.op?ti:tx.n)+'</h3>'+((bl&&bl.length)?'<ul>'+bl.map(x=>'<li>'+x+'</li>').join("")+'</ul>':'')+
+      (soon?'<span class="mod-st">'+t.prep+'</span>':'<button type="button" class="ask" data-id="'+(k?s.id+"-"+k:s.id)+'">'+t.ask+'</button>')+'</div>').join("");
+    const c=document.createElement("div");
+    c.className="acc-item"+(soon?" is-soon":"");
+    c.innerHTML='<h3 class="acc-t"><button type="button" class="acc-h" data-acc="'+s.id+'" aria-expanded="'+abierto+'" aria-controls="'+pid+'">'+
+      '<span class="ico">'+(ICO[s.id]||ICO.def)+'</span><span class="acc-n">'+tx.n+'</span>'+(soon?'<span class="pill soon">'+t.soon+'</span>':'')+
+      '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></h3>'+
+      '<div class="acc-p" id="'+pid+'"'+(abierto?'':' hidden')+'><div class="mods">'+mods+'</div></div>';
     grid.appendChild(c);
   });
   const o=document.createElement("option");o.value="otro";o.textContent=t.other;sel.appendChild(o);
@@ -802,6 +828,10 @@ document.getElementById("rows").addEventListener("click",e=>{
   estado[b.dataset.id]=b.dataset.v;guardar();render();
 });
 document.getElementById("svcGrid").addEventListener("click",e=>{
+  const h=e.target.closest(".acc-h");
+  if(h){const id=h.dataset.acc, abrir=h.getAttribute("aria-expanded")!=="true";
+    document.querySelectorAll("#svcGrid .acc-h").forEach(x=>{const on=abrir&&x===h;x.setAttribute("aria-expanded",on);document.getElementById(x.getAttribute("aria-controls")).hidden=!on});
+    accOpen=abrir?id:null; if(abrir)h.scrollIntoView({block:"nearest",behavior:"smooth"}); return;}
   const b=e.target.closest(".ask");if(!b)return;
   const fs=document.getElementById("f-svc");fs.value=b.dataset.id;if(fs.selectedIndex<0||fs.value!==b.dataset.id){const o=[...fs.options].find(x=>x.value.startsWith(b.dataset.id+"-"));if(o)fs.value=o.value}
   verDestino();ddRefresh(document.getElementById("f-svc"));
