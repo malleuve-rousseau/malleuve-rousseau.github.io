@@ -143,6 +143,11 @@ section.alt .svc{background:var(--bg)}
 .note{margin-top:20px;font-size:.92rem;color:var(--muted)}
 
 /* Comercio exterior */
+.imp-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:40px;align-items:center;margin-bottom:44px}
+.imp-top .head{margin-bottom:0}
+.imp-art{margin:0;background:#fff;border-radius:24px;padding:14px;box-shadow:0 1px 2px rgba(11,13,26,.06),0 8px 28px rgba(11,13,26,.10)}
+.imp-art img{display:block;width:100%;height:auto}
+@media (max-width:900px){.imp-top{grid-template-columns:1fr;gap:28px}.imp-art{max-width:300px;justify-self:center}}
 .routes{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px}
 .route{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:24px;min-width:0;display:flex;flex-direction:column;gap:8px}
 .route .ico{background:var(--navy);color:#fff}
@@ -351,9 +356,17 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
 
 <section class="band alt" id="importacion" data-sec="importacion">
   <div class="wrap">
-    <div class="head">
-      <div><span class="tag" data-i18n="imp.tag">Comercio exterior</span><h2 data-i18n="imp.h2">Importación y exportación</h2></div>
-      <p data-i18n="imp.p">Le importamos las mercancías que necesite, desde el fabricante hasta su almacén o su obra, y exportamos productos cubanos a mercados externos. Cotizamos por puerto.</p>
+    <div class="imp-top">
+      <div class="head">
+        <div><span class="tag" data-i18n="imp.tag">Comercio exterior</span><h2 data-i18n="imp.h2">Importación y exportación</h2></div>
+        <p data-i18n="imp.p">Le importamos las mercancías que necesite, desde el fabricante hasta su almacén o su obra, y exportamos productos cubanos a mercados externos. Cotizamos por puerto.</p>
+      </div>
+      <figure class="imp-art">
+        <picture>
+          <source srcset="img/comercio-exterior.webp" type="image/webp">
+          <img src="img/comercio-exterior.png" width="320" height="320" loading="lazy" decoding="async" data-i18n-alt="imp.alt" alt="Comercio exterior por vía marítima, aérea y por carretera: globo centrado en el Caribe con un buque portacontenedores, un avión de carga y un camión">
+        </picture>
+      </figure>
     </div>
     <div class="routes">
       <div class="route"><span class="code">FOB China</span><h3 data-i18n="imp.r1">Origen</h3><p data-i18n="imp.r1d">Compra al fabricante con la mercancía cargada en el puerto de embarque. Validamos fabricante, certificaciones y muestras antes de comprar.</p></div>
@@ -584,7 +597,7 @@ const EN = {
  "mat.tag":"Supply","mat.h2":"Materials and hardware","mat.p":"We produce and sell construction materials. Prices are quoted according to volume, specification and delivery location.",
  "mat.1":"Construction materials","mat.1d":"Aggregates, cement, blocks and building elements","mat.2":"Paints","mat.2d":"Interior, exterior and waterproofing","mat.3":"Hardware","mat.3d":"Fittings, fasteners and tools","mat.4":"Plumbing and heating","mat.4d":"Pipes, connections, faucets and equipment","mat.5":"Glass products","mat.5d":"Flat glass and joinery elements","mat.6":"Precast elements","mat.6d":"Items of our own production",
  "mat.note":"We do not sell products from the retail network or items prohibited by law.",
- "imp.tag":"Foreign trade","imp.h2":"Import and export","imp.p":"We import the goods you need, from the manufacturer to your warehouse or site, and export Cuban products to foreign markets. Quotes are given by port.",
+ "imp.tag":"Foreign trade","imp.h2":"Import and export","imp.alt":"Foreign trade by sea, air and road: a globe centred on the Caribbean with a container ship, a cargo plane and a truck","imp.p":"We import the goods you need, from the manufacturer to your warehouse or site, and export Cuban products to foreign markets. Quotes are given by port.",
  "imp.r1":"Origin","imp.r1d":"Purchase from the manufacturer with goods loaded at the port of shipment. We vet the manufacturer, certifications and samples before buying.",
  "imp.r2":"Sea freight","imp.r2d":"Cost, insurance and freight to the port of Mariel, in the Special Development Zone, or to the port of Santiago de Cuba.",
  "imp.r3":"Eastern Cuba","imp.r4":"Shipping from Cuba","imp.r4c":"Export","imp.r5":"Air freight","imp.r5d":"Carriage and insurance paid to the airports of Havana or Santiago de Cuba. For urgent or high-value shipments, with documents handled by us.","imp.r4d":"Shipment of Cuban products from Mariel or Santiago de Cuba, with documents and freight handled by us.","imp.r3d":"Cost, insurance and freight to the port of Santiago de Cuba.",
@@ -730,6 +743,10 @@ function aplicarIdioma(){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>{
     if(el.dataset.es===undefined)el.dataset.es=el.innerHTML;
     el.innerHTML=(lang==="en"&&EN[el.dataset.i18nHtml])?EN[el.dataset.i18nHtml]:el.dataset.es;
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{
+    if(el.dataset.esAlt===undefined)el.dataset.esAlt=el.alt;
+    el.alt=(lang==="en"&&EN[el.dataset.i18nAlt])?EN[el.dataset.i18nAlt]:el.dataset.esAlt;
   });
   document.getElementById("steps").style.setProperty("--fase",'"'+UI[lang].fase+' "');
   ["es","en"].forEach(l=>document.getElementById("lang-"+l).setAttribute("aria-pressed",l===lang));
