@@ -78,7 +78,7 @@ nav a:hover{background:#EEF1FF;color:#0010E6}
 /* Portada */
 .hero{background:radial-gradient(1200px 500px at 85% -10%,var(--navy-2),transparent 60%),linear-gradient(180deg,var(--navy),#08143D);color:#fff;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--accent) 0 33%,#0010E6 33% 100%)}
-.hero .wrap{position:relative;z-index:1;padding-block:6px 88px;display:grid;grid-template-columns:minmax(0,1fr);column-gap:56px;row-gap:28px;align-items:start}
+.hero .wrap{position:relative;z-index:1;padding-block:6px 88px;display:grid;grid-template-columns:1.25fr .9fr;column-gap:56px;row-gap:28px;align-items:start}
 .hero .tag{color:#AEB9FF}
 .hero-kicker{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:clamp(.85rem,1.6vw,1rem);color:#DDE3FF;margin-bottom:0}
 .hero-kicker i{font-style:normal;color:var(--accent);margin:0 .35em}
@@ -96,6 +96,9 @@ html[lang="en"] .hero h1{--k:16.85}
 .spec{background:#FFFFFF;color:#0E1A3A;border-radius:16px;box-shadow:0 24px 48px rgba(0,0,0,.28);padding:8px 24px;min-width:0}
 .spec div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid #E2E7F1;font-size:.96rem}
 .spec div:last-child{border-bottom:0}
+.ficha-lat{grid-column:2;grid-row:4/span 2}
+@media (min-width:901px){.whois .who-t{display:none}}
+@media (max-width:900px){.ficha-lat{display:none}}
 .spec span:first-child{color:#56617D}
 .spec span:last-child{font-weight:600;text-align:right}
 @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-block:6px 64px;gap:24px}}
@@ -402,6 +405,16 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
         <a class="btn btn-primary" href="#contacto" data-i18n="cta.quote">Solicitar cotización</a>
         <a class="btn btn-ghost" href="#servicios" data-i18n="cta.services">Ver servicios</a>
       </div>
+    </div>
+    <div class="spec ficha-lat" aria-label="Ficha de la empresa">
+      <div><span data-i18n="lg.nombre">Nombre</span><span>Malleuve &amp; Rousseau</span></div>
+      <div><span data-i18n="lg.forma">Forma jurídica</span><span data-i18n="lg.forma.v">Sociedad de Responsabilidad Limitada</span></div>
+      <div><span data-i18n="lg.cat">Categoría</span><span data-i18n="lg.cat.v">MIPYME</span></div>
+      <div><span data-i18n="lg.nit">NIT</span><span>50004346012</span></div>
+      <div><span data-i18n="lg.dom">Domicilio legal</span><span>Avenida Cebreco No. 310<br>% 11 y 13<br>Vista Alegre, Santiago de Cuba</span></div>
+      <div><span data-i18n="lg.mail">Correo electrónico</span><span></span></div>
+      <div><span data-i18n="lg.tel">Teléfonos</span><span></span></div>
+      <div><span data-i18n="lg.wa">WhatsApp</span><span></span></div>
     </div>
   </div>
 </section>
