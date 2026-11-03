@@ -186,6 +186,7 @@ section.alt .svc{background:var(--bg)}
 .route .r-head .ico{width:36px;height:36px;border-radius:9px;margin:0;flex-shrink:0}
 .route .r-head .ico svg{width:18px;height:18px}
 .route .code-split{display:flex;align-items:center;gap:8px}
+.route .code-split .sl{align-self:stretch;flex-shrink:0;width:4px;margin:0 6px;border-radius:2px;background:currentColor;transform:skewX(-14deg)}
 .route .code-split .inc{font-size:2.15rem;line-height:1;letter-spacing:-.02em;white-space:nowrap}
 .route .code-split .dest{display:flex;flex-direction:column;font-size:1rem;line-height:1.2;white-space:nowrap}
 .route h3{font-size:.95rem;font-weight:600;color:var(--muted)}
@@ -401,8 +402,8 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
   <div class="ce-extra" id="ce-extra">
     <div class="routes">
       <div class="route"><span class="code">FOB China</span><h3 data-i18n="imp.r1">Origen</h3><p data-i18n="imp.r1d">Compra al fabricante con la mercancía cargada en el puerto de embarque. Validamos fabricante, certificaciones y muestras antes de comprar.</p></div>
-      <div class="route"><span class="code code-split" aria-label="CIF Mariel / Santiago de Cuba"><span class="inc" aria-hidden="true">CIF /</span><span class="dest" aria-hidden="true"><span>Mariel</span><span>Santiago de Cuba</span></span></span><h3 data-i18n="imp.r2">Carga marítima</h3><p data-i18n="imp.r2d">Costo, seguro y flete hasta el puerto de Mariel, en la Zona Especial de Desarrollo, o hasta el puerto de Santiago de Cuba.</p></div>
-      <div class="route"><span class="code code-split" aria-label="CIP La Habana / Santiago de Cuba"><span class="inc" aria-hidden="true">CIP /</span><span class="dest" aria-hidden="true"><span>La Habana</span><span>Santiago de Cuba</span></span></span><h3 data-i18n="imp.r5">Carga aérea</h3><p data-i18n="imp.r5d">Transporte y seguro pagados hasta los aeropuertos de La Habana o Santiago de Cuba. Para envíos urgentes o de alto valor, con la documentación gestionada por nosotros.</p></div>
+      <div class="route"><span class="code code-split" aria-label="CIF Mariel / Santiago de Cuba"><span class="inc" aria-hidden="true">CIF</span><span class="sl" aria-hidden="true"></span><span class="dest" aria-hidden="true"><span>Mariel</span><span>Santiago de Cuba</span></span></span><h3 data-i18n="imp.r2">Carga marítima</h3><p data-i18n="imp.r2d">Costo, seguro y flete hasta el puerto de Mariel, en la Zona Especial de Desarrollo, o hasta el puerto de Santiago de Cuba.</p></div>
+      <div class="route"><span class="code code-split" aria-label="CIP La Habana / Santiago de Cuba"><span class="inc" aria-hidden="true">CIP</span><span class="sl" aria-hidden="true"></span><span class="dest" aria-hidden="true"><span>La Habana</span><span>Santiago de Cuba</span></span></span><h3 data-i18n="imp.r5">Carga aérea</h3><p data-i18n="imp.r5d">Transporte y seguro pagados hasta los aeropuertos de La Habana o Santiago de Cuba. Para envíos urgentes o de alto valor, con la documentación gestionada por nosotros.</p></div>
       <div class="route"><span class="code" data-i18n="imp.r4c">Exportación</span><h3 data-i18n="imp.r4">Salida desde Cuba</h3><p data-i18n="imp.r4d">Embarque de productos cubanos desde Mariel o Santiago de Cuba, con la documentación y el flete gestionados por nosotros.</p></div>
     </div>
     <ol class="steps" id="steps">
