@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="mr-build" content="1793690697">
+<meta name="mr-build" content="1793691230">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Malleuve & Rousseau</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -315,6 +315,8 @@ input.bad,textarea.bad{border-color:var(--accent);box-shadow:0 0 0 3px color-mix
 .result .ready{font-weight:600;margin:0 0 12px}
 .send-acts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
 .btn-copy{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.req-code{margin:0 0 14px;font-size:1rem}
+.req-code b{white-space:nowrap;font-family:var(--f-display);letter-spacing:.06em;color:var(--blue-text)}
 .send-hint{margin:0 0 12px;font-size:.88rem;color:var(--muted)}
 .result{scroll-margin-top:84px}
 .btn-wa{background:#1F8A4C;color:#fff}
@@ -662,10 +664,10 @@ const EN = {
 };
 const UI = {
  es:{pickh:"Elija una opción",soon:"Próximamente",prep:"En preparación",avail:"Disponible",ask:"Solicitar →",other:"Otro / varios servicios",of:" de ",st:[["activo","Activo"],["pronto","Próximamente"],["oculto","Oculto"]],
-     copied:"Copiada",sel:"Texto seleccionado",err:"Complete los campos obligatorios marcados en rojo.",errci:"El carnet de identidad debe tener 11 dígitos.",errnum:"El NIT solo admite números.",errmail:"Revise el correo electrónico.",errok:"Para enviar la solicitud debe autorizar el uso de sus datos.",errtel:"Los números de teléfono deben tener exactamente 8 dígitos.",errvia:"Elija al menos una vía de envío: WhatsApp o correo electrónico.",ready:"Su solicitud está lista. Toque el botón para enviarla:",bwa:"Enviar por WhatsApp",bcopy:"Copiar mensaje",hcopy:"Si WhatsApp o el correo no se abren, toque «Copiar mensaje» y péguelo en un chat o correo dirigido a nosotros.",bmail:"Enviar por correo",subj:"Solicitud de cotización",errtelx:"Revise el número de teléfono: debe tener entre 6 y 15 dígitos.",
+     copied:"Copiada",sel:"Texto seleccionado",err:"Complete los campos obligatorios marcados en rojo.",errci:"El carnet de identidad debe tener 11 dígitos.",errnum:"El NIT solo admite números.",errmail:"Revise el correo electrónico.",errok:"Para enviar la solicitud debe autorizar el uso de sus datos.",errtel:"Los números de teléfono deben tener exactamente 8 dígitos.",errvia:"Elija al menos una vía de envío: WhatsApp o correo electrónico.",ready:"Su solicitud está lista. Toque el botón para enviarla:",bwa:"Enviar por WhatsApp",code:"Código de solicitud",bcopy:"Copiar mensaje",hcopy:"Si WhatsApp o el correo no se abren, toque «Copiar mensaje» y péguelo en un chat o correo dirigido a nosotros.",bmail:"Enviar por correo",subj:"Solicitud de cotización",errtelx:"Revise el número de teléfono: debe tener entre 6 y 15 dígitos.",
      res:"Solicitud preparada (vista previa, aún no se envía):",lbl:["Nombre","Teléfono","Tipo de cliente","Servicio","Provincia","Destino"],fase:"Fase"},
  en:{pickh:"Choose an option",soon:"Coming soon",prep:"In preparation",avail:"Available",ask:"Request →",other:"Other / several services",of:" of ",st:[["activo","Active"],["pronto","Coming soon"],["oculto","Hidden"]],
-     copied:"Copied",sel:"Text selected",err:"Complete the required fields marked in red.",errci:"The identity card number must have 11 digits.",errnum:"The tax ID accepts numbers only.",errmail:"Check the email address.",errok:"To send the request you must authorize the use of your data.",errtel:"Phone numbers must have exactly 8 digits.",errvia:"Choose at least one way to send it: WhatsApp or email.",ready:"Your request is ready. Tap the button to send it:",bwa:"Send by WhatsApp",bcopy:"Copy message",hcopy:"If WhatsApp or email does not open, tap “Copy message” and paste it into a chat or email addressed to us.",bmail:"Send by email",subj:"Quote request",errtelx:"Check the phone number: it must have between 6 and 15 digits.",
+     copied:"Copied",sel:"Text selected",err:"Complete the required fields marked in red.",errci:"The identity card number must have 11 digits.",errnum:"The tax ID accepts numbers only.",errmail:"Check the email address.",errok:"To send the request you must authorize the use of your data.",errtel:"Phone numbers must have exactly 8 digits.",errvia:"Choose at least one way to send it: WhatsApp or email.",ready:"Your request is ready. Tap the button to send it:",bwa:"Send by WhatsApp",code:"Request code",bcopy:"Copy message",hcopy:"If WhatsApp or email does not open, tap “Copy message” and paste it into a chat or email addressed to us.",bmail:"Send by email",subj:"Quote request",errtelx:"Check the phone number: it must have between 6 and 15 digits.",
      res:"Request prepared (preview, not sent yet):",lbl:["Name","Phone","Client type","Service","Province","Destination"],fase:"Phase"}
 };
 
@@ -920,6 +922,14 @@ document.querySelectorAll('input[name="tipo"]').forEach(r=>r.addEventListener("c
 const TEL=[["f-cc","f-phone"],["f-cc2","f-phone2"]];
 function limTel(cc,ph){const max=document.getElementById(cc).value==="CU"?8:15;const i=document.getElementById(ph);i.maxLength=max;i.placeholder=max===8?"8 dígitos".replace("dígitos",lang==="en"?"digits":"dígitos"):"";i.value=i.value.replace(/\D/g,"").slice(0,max)}
 TEL.forEach(([cc,ph])=>{document.getElementById(ph).addEventListener("input",()=>limTel(cc,ph));document.getElementById(cc).addEventListener("change",()=>limTel(cc,ph));limTel(cc,ph)});
+/* Código único por solicitud: MR-AAMMDD-XXXXX. El mismo código va en WhatsApp y en el correo,
+   así un envío por ambos canales se reconoce como una sola solicitud. */
+function codigoSolicitud(){
+  const A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", d=new Date(), r=new Uint8Array(5);
+  (window.crypto||window.msCrypto).getRandomValues(r);
+  const f=String(d.getFullYear()).slice(2)+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+  return "MR-"+f+"-"+[...r].map(x=>A[x%A.length]).join("");
+}
 document.getElementById("quote").addEventListener("submit",e=>{
   e.preventDefault();
   const t=UI[lang], tipo=tipoSel();
@@ -949,10 +959,16 @@ document.getElementById("quote").addEventListener("submit",e=>{
     [lbl("f-svc"),txt("f-svc")],
     [lbl("f-prov"),v("f-prov")?txt("f-prov"):"—"]
   ].concat(el("f-svc").value==="comercioexterior-importacion"?[[lbl("f-port"),txt("f-port")]]:[]);
-  const cuerpo=t.subj+" — Malleuve & Rousseau S.R.L.\n\n"+lines.map(([k,x])=>k+": "+x).join("\n")+"\n\n"+v("f-msg");
+  const datos=lines.map(([k,x])=>k+": "+x).join("\n")+"\n\n"+v("f-msg");
+  /* Si los datos no cambiaron, se conserva el mismo código (aunque se pulse otra vez o se recargue la página) */
+  const huella=JSON.stringify([tipo,v("f-company"),v("f-names"),v("f-ci"),v("f-nit"),v("f-cc"),v("f-phone"),v("f-cc2"),v("f-phone2"),v("f-email"),v("f-svc"),v("f-prov"),v("f-port"),v("f-msg")]);
+  let codigo=null;try{const g=JSON.parse(sessionStorage.getItem("mr-sol")||"null");if(g&&g.d===huella)codigo=g.c}catch(e){}
+  if(!codigo){codigo=codigoSolicitud();try{sessionStorage.setItem("mr-sol",JSON.stringify({d:huella,c:codigo}))}catch(e){}}
+  const cuerpo=t.subj+" — Malleuve & Rousseau S.R.L.\n"+t.code+": "+codigo+"\n\n"+datos;
   const quien=tipo==="jur"?v("f-company"):v("f-names");
   out.innerHTML="";
   const p=document.createElement("p");p.className="ready";p.textContent=t.ready;out.appendChild(p);
+  const cd=document.createElement("p");cd.className="req-code";cd.innerHTML='<span></span> <b></b>';cd.firstChild.textContent=t.code+":";cd.lastChild.textContent=codigo;out.appendChild(cd);
   const acts=document.createElement("div");acts.className="send-acts";
   const movil=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
   if(el("v-wa").checked){const a=document.createElement("a");a.className="btn btn-wa";
@@ -962,7 +978,7 @@ document.getElementById("quote").addEventListener("submit",e=>{
     }else{a.href="https://api.whatsapp.com/send?"+q;a.target="_blank";a.rel="noopener"}
     a.textContent=t.bwa;acts.appendChild(a)}
   if(el("v-mail").checked){const a=document.createElement("a");a.className="btn btn-mail";
-    a.href="mailto:"+MR_CONTACTO.correo+"?subject="+encodeURIComponent(t.subj+" — "+quien)+"&body="+encodeURIComponent(cuerpo);a.textContent=t.bmail;acts.appendChild(a)}
+    a.href="mailto:"+MR_CONTACTO.correo+"?subject="+encodeURIComponent(t.subj+" "+codigo+" — "+quien)+"&body="+encodeURIComponent(cuerpo);a.textContent=t.bmail;acts.appendChild(a)}
   const cp=document.createElement("button");cp.type="button";cp.className="btn btn-copy";cp.textContent=t.bcopy;
   cp.addEventListener("click",()=>{const ok=()=>{cp.textContent=t.copied+" ✓";setTimeout(()=>cp.textContent=t.bcopy,2500)};
     if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(cuerpo).then(ok,()=>{selPre();})}else selPre()});
