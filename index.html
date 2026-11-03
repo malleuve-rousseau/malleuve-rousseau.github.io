@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="mr-build" content="1793676854">
+<meta name="mr-build" content="1793677228">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Malleuve & Rousseau</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -78,8 +78,12 @@ nav a:hover{background:#EEF1FF;color:#0010E6}
 /* Portada */
 .hero{background:radial-gradient(1200px 500px at 85% -10%,var(--navy-2),transparent 60%),linear-gradient(180deg,var(--navy),#08143D);color:#fff;position:relative;overflow:hidden}
 .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--accent) 0 33%,#0010E6 33% 100%)}
-.hero .wrap{position:relative;z-index:1;padding-block:80px 88px;display:grid;grid-template-columns:1.25fr .9fr;gap:56px;align-items:center}
+.hero .wrap{position:relative;z-index:1;padding-block:56px 88px;display:grid;grid-template-columns:1.25fr .9fr;column-gap:56px;row-gap:40px;align-items:center}
 .hero .tag{color:#AEB9FF}
+.hero-kicker{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.16em;font-size:clamp(.85rem,1.6vw,1rem);color:#DDE3FF;margin-bottom:8px}
+.hero-kicker i{font-style:normal;color:var(--accent);margin:0 .35em}
+.hero h1{margin-top:0!important}
+
 .hero h1{font-size:clamp(2.5rem,6vw,4.4rem);font-weight:800;margin-top:14px;letter-spacing:-.03em}
 .hero h1 em{font-style:normal;color:#fff;background:linear-gradient(transparent 72%,var(--accent) 72%,var(--accent) 90%,transparent 90%)}
 .hero p.lead{margin-top:22px;font-size:1.2rem;max-width:52ch;color:#D5DBF2}
@@ -301,8 +305,12 @@ footer .admin-link{background:none;border:1px solid rgba(255,255,255,.3);color:#
 <main>
 <section class="hero" id="inicio">
   <div class="wrap">
+    <div class="hero-kicker">
+      <span><span data-i18n="hk.1">Importación</span> <i aria-hidden="true">•</i> <span data-i18n="hk.2">Exportación</span></span>
+      <span data-i18n="hk.3">Comercialización</span>
+      <span data-i18n="hk.4">Servicios</span>
+    </div>
     <div>
-      <span class="tag" data-i18n="hero.tag">Comercialización · Importación · Exportación</span>
       <h1 data-i18n-html="hero.h1"><em>CONECTANDO</em> con el mundo</h1>
       <p class="lead" data-i18n="hero.lead">Comercialización mayorista y minorista. Importamos lo que su negocio necesita y exportamos sus productos y servicios.</p>
       <div class="ctas">
@@ -554,7 +562,7 @@ const SERVICIOS = [
 
 const EN = {
  "nav.menu":"Menu","nav.servicios":"Services","nav.materiales":"Materials","nav.importacion":"Foreign trade","nav.obras":"Projects","nav.empresa":"Company","nav.contacto":"Contact",
- "hero.tag":"Trade · Import · Export",
+ "hk.1":"Import","hk.2":"Export","hk.3":"Trade","hk.4":"Services",
  "hero.h1":"<em>CONNECTING</em> with the world",
  "hero.lead":"Wholesale and retail trade. We import what your business needs and export your products and services.",
  "cta.quote":"Request a quote","cta.services":"See services",
