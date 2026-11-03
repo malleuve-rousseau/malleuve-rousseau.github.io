@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="mr-build" content="1793680814">
+<meta name="mr-build" content="1793690697">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Malleuve & Rousseau</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -313,7 +313,10 @@ input.bad,textarea.bad{border-color:var(--accent);box-shadow:0 0 0 3px color-mix
 .via-o input{width:18px;height:18px;accent-color:var(--brand)}
 .via-o:has(input:checked){border-color:var(--brand);background:var(--brand-soft)}
 .result .ready{font-weight:600;margin:0 0 12px}
-.send-acts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.send-acts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.btn-copy{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+.send-hint{margin:0 0 12px;font-size:.88rem;color:var(--muted)}
+.result{scroll-margin-top:84px}
 .btn-wa{background:#1F8A4C;color:#fff}
 .btn-mail{background:var(--navy);color:#fff}
 .resumen{margin:0;white-space:pre-wrap;font:inherit;font-size:.9rem;color:var(--muted);background:var(--surface);border-radius:8px;padding:12px}
@@ -659,10 +662,10 @@ const EN = {
 };
 const UI = {
  es:{pickh:"Elija una opción",soon:"Próximamente",prep:"En preparación",avail:"Disponible",ask:"Solicitar →",other:"Otro / varios servicios",of:" de ",st:[["activo","Activo"],["pronto","Próximamente"],["oculto","Oculto"]],
-     copied:"Copiada",sel:"Texto seleccionado",err:"Complete los campos obligatorios marcados en rojo.",errci:"El carnet de identidad debe tener 11 dígitos.",errnum:"El NIT solo admite números.",errmail:"Revise el correo electrónico.",errok:"Para enviar la solicitud debe autorizar el uso de sus datos.",errtel:"Los números de teléfono deben tener exactamente 8 dígitos.",errvia:"Elija al menos una vía de envío: WhatsApp o correo electrónico.",ready:"Su solicitud está lista. Toque el botón para enviarla:",bwa:"Enviar por WhatsApp",bmail:"Enviar por correo",subj:"Solicitud de cotización",errtelx:"Revise el número de teléfono: debe tener entre 6 y 15 dígitos.",
+     copied:"Copiada",sel:"Texto seleccionado",err:"Complete los campos obligatorios marcados en rojo.",errci:"El carnet de identidad debe tener 11 dígitos.",errnum:"El NIT solo admite números.",errmail:"Revise el correo electrónico.",errok:"Para enviar la solicitud debe autorizar el uso de sus datos.",errtel:"Los números de teléfono deben tener exactamente 8 dígitos.",errvia:"Elija al menos una vía de envío: WhatsApp o correo electrónico.",ready:"Su solicitud está lista. Toque el botón para enviarla:",bwa:"Enviar por WhatsApp",bcopy:"Copiar mensaje",hcopy:"Si WhatsApp o el correo no se abren, toque «Copiar mensaje» y péguelo en un chat o correo dirigido a nosotros.",bmail:"Enviar por correo",subj:"Solicitud de cotización",errtelx:"Revise el número de teléfono: debe tener entre 6 y 15 dígitos.",
      res:"Solicitud preparada (vista previa, aún no se envía):",lbl:["Nombre","Teléfono","Tipo de cliente","Servicio","Provincia","Destino"],fase:"Fase"},
  en:{pickh:"Choose an option",soon:"Coming soon",prep:"In preparation",avail:"Available",ask:"Request →",other:"Other / several services",of:" of ",st:[["activo","Active"],["pronto","Coming soon"],["oculto","Hidden"]],
-     copied:"Copied",sel:"Text selected",err:"Complete the required fields marked in red.",errci:"The identity card number must have 11 digits.",errnum:"The tax ID accepts numbers only.",errmail:"Check the email address.",errok:"To send the request you must authorize the use of your data.",errtel:"Phone numbers must have exactly 8 digits.",errvia:"Choose at least one way to send it: WhatsApp or email.",ready:"Your request is ready. Tap the button to send it:",bwa:"Send by WhatsApp",bmail:"Send by email",subj:"Quote request",errtelx:"Check the phone number: it must have between 6 and 15 digits.",
+     copied:"Copied",sel:"Text selected",err:"Complete the required fields marked in red.",errci:"The identity card number must have 11 digits.",errnum:"The tax ID accepts numbers only.",errmail:"Check the email address.",errok:"To send the request you must authorize the use of your data.",errtel:"Phone numbers must have exactly 8 digits.",errvia:"Choose at least one way to send it: WhatsApp or email.",ready:"Your request is ready. Tap the button to send it:",bwa:"Send by WhatsApp",bcopy:"Copy message",hcopy:"If WhatsApp or email does not open, tap “Copy message” and paste it into a chat or email addressed to us.",bmail:"Send by email",subj:"Quote request",errtelx:"Check the phone number: it must have between 6 and 15 digits.",
      res:"Request prepared (preview, not sent yet):",lbl:["Name","Phone","Client type","Service","Province","Destination"],fase:"Phase"}
 };
 
@@ -951,12 +954,24 @@ document.getElementById("quote").addEventListener("submit",e=>{
   out.innerHTML="";
   const p=document.createElement("p");p.className="ready";p.textContent=t.ready;out.appendChild(p);
   const acts=document.createElement("div");acts.className="send-acts";
-  if(el("v-wa").checked){const a=document.createElement("a");a.className="btn btn-wa";a.target="_blank";a.rel="noopener";
-    a.href="https://wa.me/"+MR_CONTACTO.whatsapp+"?text="+encodeURIComponent(cuerpo);a.textContent=t.bwa;acts.appendChild(a)}
+  const movil=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(el("v-wa").checked){const a=document.createElement("a");a.className="btn btn-wa";
+    const q="phone="+MR_CONTACTO.whatsapp+"&text="+encodeURIComponent(cuerpo);
+    if(movil){a.href="whatsapp://send?"+q;
+      a.addEventListener("click",()=>{const t0=Date.now();setTimeout(()=>{if(!document.hidden&&Date.now()-t0<2500)location.href="https://api.whatsapp.com/send?"+q},1600)});
+    }else{a.href="https://api.whatsapp.com/send?"+q;a.target="_blank";a.rel="noopener"}
+    a.textContent=t.bwa;acts.appendChild(a)}
   if(el("v-mail").checked){const a=document.createElement("a");a.className="btn btn-mail";
     a.href="mailto:"+MR_CONTACTO.correo+"?subject="+encodeURIComponent(t.subj+" — "+quien)+"&body="+encodeURIComponent(cuerpo);a.textContent=t.bmail;acts.appendChild(a)}
+  const cp=document.createElement("button");cp.type="button";cp.className="btn btn-copy";cp.textContent=t.bcopy;
+  cp.addEventListener("click",()=>{const ok=()=>{cp.textContent=t.copied+" ✓";setTimeout(()=>cp.textContent=t.bcopy,2500)};
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(cuerpo).then(ok,()=>{selPre();})}else selPre()});
+  acts.appendChild(cp);
   out.appendChild(acts);
+  const hint=document.createElement("p");hint.className="send-hint";hint.textContent=t.hcopy;out.appendChild(hint);
   const pre=document.createElement("pre");pre.className="resumen";pre.textContent=cuerpo;out.appendChild(pre);
+  function selPre(){const r=document.createRange();r.selectNodeContents(pre);const sl=getSelection();sl.removeAllRanges();sl.addRange(r);cp.textContent=t.sel}
+  out.scrollIntoView({behavior:"smooth",block:"start"});
 });
 
 cargar();buildCountries();
